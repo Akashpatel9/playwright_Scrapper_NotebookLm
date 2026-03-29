@@ -1,0 +1,13 @@
+{
+  "name": "notebooklm-automation",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Browser automation for NotebookLM workflows",
+  "scripts": {
+    "dev": "node src/main.js",
+    "dev:headed": "HEADLESS=false node src/main.js"
+  },
+  "dependencies": {
+    "playwright": "^1.53.0"
+  }
+}
