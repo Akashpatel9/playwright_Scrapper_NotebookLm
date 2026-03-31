@@ -78,7 +78,7 @@ async function automateNotebookLM() {
     //     `Give a detailed structured summary with headings, references, and key insights.`
     // );
 
-    // await waitAndClick(page.locator('button[aria-label="Send message"]'));
+    // await page.locator('button[aria-label="Send message"]').click();
     // await waitForGeneration(page);
 
     
@@ -100,76 +100,77 @@ async function automateNotebookLM() {
     await page.waitForTimeout(2000);
 
 
-    // AUDIO
-    console.log('Generating Audio...');
-    await page.locator('[aria-label="Audio Overview"]').click();
-    await page.waitForTimeout(2000);
-    await page.locator('mat-radio-button:has-text("Brief")').click();
-    await page.waitForTimeout(2000);
-    const chatBoxAudio = page
-        .locator('label:has-text("What should the AI hosts focus on in this episode?")')
-        .locator('..')
-        .locator('textarea');
-    await chatBoxAudio.fill('Create a podcast-style explanation covering all concepts clearly.');
-    await page.waitForTimeout(2000);
-    await waitAndClick(page.locator('button:has-text("Generate")'));
-    await page.waitForTimeout(2000);
+    // // AUDIO
+    // console.log('Generating Audio...');
+    // await page.locator('[aria-label="Audio Overview"]').click();
+    // await page.waitForTimeout(2000);
+    // await page.locator('mat-radio-button:has-text("Brief")').click();
+    // await page.waitForTimeout(2000);
+    // const chatBoxAudio = page
+    //     .locator('label:has-text("What should the AI hosts focus on in this episode?")')
+    //     .locator('..')
+    //     .locator('textarea');
+    // await chatBoxAudio.fill('Create a podcast-style explanation covering all concepts clearly.');
+    // await page.waitForTimeout(2000);
+    // await page.locator('button:has-text("Generate")').click();
+    // await page.waitForTimeout(2000);
 
 
-    // VIDEO
-    console.log('Generating Video...');
-    await page.locator('[aria-label="Video Overview"]').click();
-    await page.waitForTimeout(2000);
-    await page.locator('mat-radio-button:has-text("Explainer")').click();
-    await page.waitForTimeout(2000);
-    await page.locator('mat-radio-button:has-text("Whiteboard")').click();
-    await page.waitForTimeout(2000);
-    const chatBoxVideo = page
-        .locator('label:has-text("What should the AI hosts focus on?")')
-        .locator('..')
-        .locator('textarea');
-    await chatBoxVideo.fill('Create an explainer video script with step-by-step clarity.');
-    await page.waitForTimeout(2000);
-    await waitAndClick(page.locator('button:has-text("Generate")'));
-    await page.waitForTimeout(2000);
+    // // VIDEO
+    // console.log('Generating Video...');
+    // await page.locator('[aria-label="Video Overview"]').click();
+    // await page.waitForTimeout(2000);
+    // await page.locator('mat-radio-button:has-text("Explainer")').click();
+    // await page.waitForTimeout(2000);
+    // await page.locator('mat-radio-button:has-text("Whiteboard")').click();
+    // await page.waitForTimeout(2000);
+    // const chatBoxVideo = page
+    //     .locator('label:has-text("What should the AI hosts focus on?")')
+    //     .locator('..')
+    //     .locator('textarea');
+    // await chatBoxVideo.fill('Create an explainer video script with step-by-step clarity.');
+    // await page.waitForTimeout(2000);
+    // await page.locator('button:has-text("Generate")').click();
+    // await page.waitForTimeout(2000);
 
 
-    // MIND MAP
-    console.log('Generating Mind Map...');
-    await page.locator('[aria-label="Mind Map"]').click();
-    await page.waitForTimeout(2000);
+    // // MIND MAP
+    // console.log('Generating Mind Map...');
+    // await page.locator('[aria-label="Mind Map"]').click();
+    // await page.waitForTimeout(2000);
 
 
-    // FLASHCARDS
-    console.log('Generating Flashcards...');
-    await page.locator('[aria-label="Flashcards"]').click();
-    await page.waitForTimeout(2000);
-    await page.locator('button:has-text("Hard")').click();
-    await page.waitForTimeout(2000);
-    const chatBoxFlashCards = page
-        .locator('h2:has-text("What should the topic be?")')
-        .locator('..')
-        .locator('textarea');
-    await chatBoxFlashCards.fill('Create flashcards covering all key concepts.');
-    await page.waitForTimeout(2000);
-    await waitAndClick(page.locator('button:has-text("Generate")'));
-    await page.waitForTimeout(2000);
+    // // FLASHCARDS
+    // console.log('Generating Flashcards...');
+    // await page.locator('[aria-label="Flashcards"]').click();
+    // await page.waitForTimeout(2000);
+    // await page.locator('button:has-text("Hard")').click();
+    // await page.waitForTimeout(2000);
+    // const chatBoxFlashCards = page
+    //     .locator('h2:has-text("What should the topic be?")')
+    //     .locator('..')
+    //     .locator('textarea');
+    // await chatBoxFlashCards.fill('Create flashcards covering all key concepts.');
+    // await page.waitForTimeout(2000);
+    // await page.locator('button:has-text("Generate")').click();
+    // await page.waitForTimeout(2000);
 
 
-    // QUIZ
-    console.log('Generating Quiz...');
-    await page.locator('[aria-label="Quiz"]').click();
-    await page.waitForTimeout(2000);
-    await page.locator('button:has-text("Hard")').click();
-    await page.waitForTimeout(2000);
-    const chatBoxQuiz = page
-        .locator('h2:has-text("What should the topic be?")')
-        .locator('..')
-        .locator('textarea');
-    await chatBoxQuiz.fill('Create a challenging quiz covering all topics.');
-    await page.waitForTimeout(2000);
-    await waitAndClick(page.locator('button:has-text("Generate")'));
-    await page.waitForTimeout(2000);
+    // // QUIZ
+    // console.log('Generating Quiz...');
+    // await page.locator('[aria-label="Quiz"]').click();
+    // await page.waitForTimeout(2000);
+    // await page.locator('button:has-text("Hard")').click();
+    // await page.waitForTimeout(2000);
+    // const chatBoxQuiz = page
+    //     .locator('h2:has-text("What should the topic be?")')
+    //     .locator('..')
+    //     .locator('textarea');
+    // await chatBoxQuiz.fill('Create a challenging quiz covering all topics.');
+    // await page.waitForTimeout(2000);
+    // await page.locator('button:has-text("Generate")').click();
+    // await page.waitForTimeout(2000);
+
     console.log('All content generated!');
 
 
@@ -208,10 +209,6 @@ async function automateNotebookLM() {
 
 
 
-
-
-
-    return;
 
     // ----------------------------------------------------- TODO  -------------------------------------------------
     // ---------- Downloading ----------
