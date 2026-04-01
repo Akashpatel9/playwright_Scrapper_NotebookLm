@@ -4,8 +4,8 @@
   "private": true,
   "description": "Browser automation for NotebookLM workflows",
   "scripts": {
-    "dev": "node src/main.js",
-    "dev:headed": "HEADLESS=false node src/main.js"
+    "generate": "node src/generate.js",
+    "download": "node src/download.js"
   },
   "dependencies": {
     "playwright": "^1.53.0"
