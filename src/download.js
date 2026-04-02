@@ -8,6 +8,11 @@ const DOWNLOAD_DIR = path.join(__dirname, 'downloads');
 // Persistent profile (safe, NOT Chrome profile)
 const USER_DATA_DIR = path.join(__dirname, 'pw-profile');
 
+
+// Extensions
+const EXTENSION_1 = path.join(__dirname, '..', 'extension-1');
+const EXTENSION_2 = path.join(__dirname, '..', 'extension-2');
+
 // ---------- Main ----------
 async function automateNotebookLM() {
     if (!fs.existsSync(DOWNLOAD_DIR)) fs.mkdirSync(DOWNLOAD_DIR);
@@ -20,6 +25,10 @@ async function automateNotebookLM() {
         args: [
             '--start-maximized',
             '--disable-blink-features=AutomationControlled',
+
+            // 👇 Load multiple extensions
+            `--disable-extensions-except=${EXTENSION_1},${EXTENSION_2}`,
+            `--load-extension=${EXTENSION_1},${EXTENSION_2}`,
         ],
     });
 
@@ -96,37 +105,83 @@ async function automateNotebookLM() {
     await contentLoadWait();
 
 
-    // Open Flashcards
-    await page.waitForTimeout(5000);
-    console.log('Opening Flashcards...');
-    await page.waitForSelector('.artifact-library-container');
-    await page.locator(
-        '.artifact-item-button:has(mat-icon:has-text("cards_star"))'
-    ).first().click();
-    console.log('✅ Opened Flashcards');
-    await page.waitForTimeout(5000);
-    await page.reload();
-    await page.waitForTimeout(5000);
-    console.log('✅ Closed Flashcards Viewer');
+    // // Open Slides dropdown
+    // console.log('Opening Slides dropdown...');
+    // const artifactItemSlides = page.locator(
+    //     'div.artifact-item-button:has(button[aria-description="Slides"])'
+    // ).first();
+    // const moreBtnSlides = artifactItemSlides.locator('button[aria-label="More"]');
+    // await artifactItemSlides.waitFor({ state: 'visible' });
+    // await moreBtnSlides.waitFor({ state: 'visible' });
+    // await moreBtnSlides.click({ force: true });
+    // console.log('✅ Opened More menu for Slides');
+    // const pdfBtn = page.locator(
+    //     'button.mat-mdc-menu-item:has-text("Download PDF document")'
+    // );
+    // await pdfBtn.waitFor({ state: 'visible' });
+    // const [download] = await Promise.all([
+    //     page.waitForEvent('download'),
+    //     pdfBtn.click()
+    // ]);
+    // console.log('✅ Clicked Download PDF');
 
-    // ---------- Waiting for Content generation ----------
-    await contentLoadWait();
 
-    // Open Quiz
-    await page.waitForTimeout(5000);
-    console.log('Opening Quiz...');
-    await page.waitForSelector('.artifact-library-container');
-    await page.locator(
-        '.artifact-item-button:has(mat-icon:has-text("quiz"))'
-    ).first().click();
-    console.log('✅ Opened Quiz');
-    await page.waitForTimeout(5000);
-    await page.reload();
-    await page.waitForTimeout(5000);
-    console.log('✅ Closed Quiz Viewer');
+    // await page.waitForTimeout(5000);
 
-    // ---------- Waiting for Content generation ----------
-    await contentLoadWait();
+
+    // // Open Audio Overview dropdown
+    // console.log('Opening Audio Overview dropdown...');
+    // const artifactItem = page
+    //     .locator('div.artifact-item-button')
+    //     .filter({
+    //         has: page.locator('button[aria-description="Audio Overview"]')
+    //     })
+    //     .first();
+    // const moreBtn = artifactItem.getByRole('button', { name: 'More' });
+    // await moreBtn.waitFor({ state: 'visible' });
+    // await moreBtn.click({ force: true });
+    // console.log('✅ Menu opened');
+    // const activeMenu = page.locator('.cdk-overlay-pane').last();
+    // const downloadBtn = activeMenu.getByRole('menuitem', { name: 'Download' });
+    // await downloadBtn.waitFor({ state: 'visible' });
+    // const [download] = await Promise.all([
+    //     page.waitForEvent('download'),
+    //     downloadBtn.click()
+    // ]);
+    // console.log('✅ Download completed');
+
+
+    // await page.waitForTimeout(5000);
+
+
+    // // Open Video Overview dropdown
+    // console.log('Opening Video Overview dropdown...');
+    // const artifactItem = page
+    //     .locator('div.artifact-item-button')
+    //     .filter({
+    //         has: page.locator('button[aria-description="Video Overview"]')
+    //     })
+    //     .first();
+    // const moreBtn = artifactItem.getByRole('button', { name: 'More' });
+    // await artifactItem.waitFor({ state: 'visible' });
+    // await artifactItem.hover(); // important for Angular UI
+    // await moreBtn.scrollIntoViewIfNeeded();
+    // await moreBtn.click();
+    // console.log('✅ Dropdown opened');
+    // const activeMenu = page.locator('.cdk-overlay-pane').last();
+    // const downloadBtn = activeMenu.getByRole('menuitem', { name: 'Download' });
+    // await downloadBtn.waitFor({ state: 'visible' });
+    // const [download] = await Promise.all([
+    //     page.waitForEvent('download'),
+    //     downloadBtn.click()
+    // ]);
+    // console.log('✅ Download completed');
+
+
+
+
+
+
 
     // Open Mind Map
     await page.waitForTimeout(5000);
@@ -144,22 +199,35 @@ async function automateNotebookLM() {
     // ---------- Waiting for Content generation ----------
     await contentLoadWait();
 
-    // Open Video
-    await page.waitForTimeout(5000);
-    console.log('Opening Video...');
-    await page.waitForSelector('.artifact-library-container');
-    await page.locator(
-        '.artifact-item-button:has(mat-icon:has-text("subscriptions"))'
-    ).first().click();
-    console.log('✅ Opened Video');
-    await page.waitForTimeout(5000);
-    await page.reload();
-    await page.waitForTimeout(5000);
-    console.log('✅ Closed Video Overview');
 
-    // ---------- Waiting for Content generation ----------
-    await contentLoadWait();
+    // // Open Flashcards
+    // await page.waitForTimeout(5000);
+    // console.log('Opening Flashcards...');
+    // await page.waitForSelector('.artifact-library-container');
+    // await page.locator(
+    //     '.artifact-item-button:has(mat-icon:has-text("cards_star"))'
+    // ).first().click();
+    // console.log('✅ Opened Flashcards');
+    // await page.waitForTimeout(5000);
+    // await page.reload();
+    // await page.waitForTimeout(5000);
+    // console.log('✅ Closed Flashcards Viewer');
 
+    // // ---------- Waiting for Content generation ----------
+    // await contentLoadWait();
+
+    // // Open Quiz
+    // await page.waitForTimeout(5000);
+    // console.log('Opening Quiz...');
+    // await page.waitForSelector('.artifact-library-container');
+    // await page.locator(
+    //     '.artifact-item-button:has(mat-icon:has-text("quiz"))'
+    // ).first().click();
+    // console.log('✅ Opened Quiz');
+    // await page.waitForTimeout(5000);
+    // await page.reload();
+    // await page.waitForTimeout(5000);
+    // console.log('✅ Closed Quiz Viewer');
 }
 
 
