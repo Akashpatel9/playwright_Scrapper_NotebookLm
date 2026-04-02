@@ -105,77 +105,82 @@ async function automateNotebookLM() {
     await contentLoadWait();
 
 
-    // // Open Slides dropdown
-    // console.log('Opening Slides dropdown...');
-    // const artifactItemSlides = page.locator(
-    //     'div.artifact-item-button:has(button[aria-description="Slides"])'
-    // ).first();
-    // const moreBtnSlides = artifactItemSlides.locator('button[aria-label="More"]');
-    // await artifactItemSlides.waitFor({ state: 'visible' });
-    // await moreBtnSlides.waitFor({ state: 'visible' });
-    // await moreBtnSlides.click({ force: true });
-    // console.log('✅ Opened More menu for Slides');
-    // const pdfBtn = page.locator(
-    //     'button.mat-mdc-menu-item:has-text("Download PDF document")'
-    // );
-    // await pdfBtn.waitFor({ state: 'visible' });
-    // const [download] = await Promise.all([
-    //     page.waitForEvent('download'),
-    //     pdfBtn.click()
-    // ]);
-    // console.log('✅ Clicked Download PDF');
+    // Open Slides dropdown
+    {
+        console.log('Opening Slides dropdown...');
+        const artifactItemSlides = page.locator(
+            'div.artifact-item-button:has(button[aria-description="Slides"])'
+        ).first();
+        const moreBtnSlides = artifactItemSlides.locator('button[aria-label="More"]');
+        await artifactItemSlides.waitFor({ state: 'visible' });
+        await moreBtnSlides.waitFor({ state: 'visible' });
+        await moreBtnSlides.click({ force: true });
+        console.log('✅ Opened More menu for Slides');
+        const pdfBtn = page.locator(
+            'button.mat-mdc-menu-item:has-text("Download PDF document")'
+        );
+        await pdfBtn.waitFor({ state: 'visible' });
+        const [slidesDownload] = await Promise.all([
+            page.waitForEvent('download'),
+            pdfBtn.click()
+        ]);
+        await slidesDownload.saveAs(path.join(DOWNLOAD_DIR, slidesDownload.suggestedFilename()));
+        console.log('✅ Saved Slides PDF');
+    }
 
+    await page.waitForTimeout(5000);
 
-    // await page.waitForTimeout(5000);
+    // Open Audio Overview dropdown
+    {
+        console.log('Opening Audio Overview dropdown...');
+        const artifactItem = page
+            .locator('div.artifact-item-button')
+            .filter({
+                has: page.locator('button[aria-description="Audio Overview"]')
+            })
+            .first();
+        const moreBtn = artifactItem.getByRole('button', { name: 'More' });
+        await moreBtn.waitFor({ state: 'visible' });
+        await moreBtn.click({ force: true });
+        console.log('✅ Menu opened');
+        const activeMenu = page.locator('.cdk-overlay-pane').last();
+        const downloadBtn = activeMenu.getByRole('menuitem', { name: 'Download' });
+        await downloadBtn.waitFor({ state: 'visible' });
+        const [audioDownload] = await Promise.all([
+            page.waitForEvent('download'),
+            downloadBtn.click()
+        ]);
+        await audioDownload.saveAs(path.join(DOWNLOAD_DIR, audioDownload.suggestedFilename()));
+        console.log('✅ Saved Audio Overview');
+    }
 
+    await page.waitForTimeout(5000);
 
-    // // Open Audio Overview dropdown
-    // console.log('Opening Audio Overview dropdown...');
-    // const artifactItem = page
-    //     .locator('div.artifact-item-button')
-    //     .filter({
-    //         has: page.locator('button[aria-description="Audio Overview"]')
-    //     })
-    //     .first();
-    // const moreBtn = artifactItem.getByRole('button', { name: 'More' });
-    // await moreBtn.waitFor({ state: 'visible' });
-    // await moreBtn.click({ force: true });
-    // console.log('✅ Menu opened');
-    // const activeMenu = page.locator('.cdk-overlay-pane').last();
-    // const downloadBtn = activeMenu.getByRole('menuitem', { name: 'Download' });
-    // await downloadBtn.waitFor({ state: 'visible' });
-    // const [download] = await Promise.all([
-    //     page.waitForEvent('download'),
-    //     downloadBtn.click()
-    // ]);
-    // console.log('✅ Download completed');
-
-
-    // await page.waitForTimeout(5000);
-
-
-    // // Open Video Overview dropdown
-    // console.log('Opening Video Overview dropdown...');
-    // const artifactItem = page
-    //     .locator('div.artifact-item-button')
-    //     .filter({
-    //         has: page.locator('button[aria-description="Video Overview"]')
-    //     })
-    //     .first();
-    // const moreBtn = artifactItem.getByRole('button', { name: 'More' });
-    // await artifactItem.waitFor({ state: 'visible' });
-    // await artifactItem.hover(); // important for Angular UI
-    // await moreBtn.scrollIntoViewIfNeeded();
-    // await moreBtn.click();
-    // console.log('✅ Dropdown opened');
-    // const activeMenu = page.locator('.cdk-overlay-pane').last();
-    // const downloadBtn = activeMenu.getByRole('menuitem', { name: 'Download' });
-    // await downloadBtn.waitFor({ state: 'visible' });
-    // const [download] = await Promise.all([
-    //     page.waitForEvent('download'),
-    //     downloadBtn.click()
-    // ]);
-    // console.log('✅ Download completed');
+    // Open Video Overview dropdown
+    {
+        console.log('Opening Video Overview dropdown...');
+        const artifactItem = page
+            .locator('div.artifact-item-button')
+            .filter({
+                has: page.locator('button[aria-description="Video Overview"]')
+            })
+            .first();
+        const moreBtn = artifactItem.getByRole('button', { name: 'More' });
+        await artifactItem.waitFor({ state: 'visible' });
+        await artifactItem.hover(); // important for Angular UI
+        await moreBtn.scrollIntoViewIfNeeded();
+        await moreBtn.click();
+        console.log('✅ Dropdown opened');
+        const activeMenu = page.locator('.cdk-overlay-pane').last();
+        const downloadBtn = activeMenu.getByRole('menuitem', { name: 'Download' });
+        await downloadBtn.waitFor({ state: 'visible' });
+        const [videoDownload] = await Promise.all([
+            page.waitForEvent('download'),
+            downloadBtn.click()
+        ]);
+        await videoDownload.saveAs(path.join(DOWNLOAD_DIR, videoDownload.suggestedFilename()));
+        console.log('✅ Saved Video Overview');
+    }
 
 
 
