@@ -65,9 +65,17 @@ async function automateNotebookLM() {
     await urlInput.fill(PDF_URL);
     await page.waitForTimeout(2000);
     await urlInput.press('Enter');
-    await page.waitForTimeout(30000);
-    
-    
+
+
+    // ---------- Waiting for All buttons to be enabled ----------
+    await page.waitForFunction(() => {
+        const buttons = document.querySelectorAll('.create-artifact-button-container');
+        return [...buttons].every(btn => !btn.classList.contains('disabled-tile'));
+    });
+    console.log('✅ All buttons are enabled');
+    await page.waitForTimeout(5000);
+
+
     // STEP 3: Studio
     // ---------- GENERATIONS ----------
     // SLIDES
@@ -158,7 +166,7 @@ async function automateNotebookLM() {
     console.log('All content generated!');
 
 
-    
+
     // ---------- Waiting for Content generation ----------
     await page.waitForTimeout(10000);
     const artifactItems = await page.$$('artifact-library-item, artifact-library-note');
