@@ -2,7 +2,6 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 
-const PDF_URL = 'https://ncert.nic.in/textbook/pdf/jeff101.pdf';
 const DOWNLOAD_DIR = path.join(__dirname, 'downloads');
 
 // Persistent profile (safe, NOT Chrome profile)
@@ -20,6 +19,7 @@ async function automateNotebookLM() {
     const context = await chromium.launchPersistentContext(USER_DATA_DIR, {
         headless: false,
         acceptDownloads: true,
+        permissions: ['clipboard-read'],
         viewport: null,
         executablePath: '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser',
         args: [
@@ -183,56 +183,74 @@ async function automateNotebookLM() {
     }
 
 
-
-
-
-
+    await page.waitForTimeout(5000);
 
     // Open Mind Map
+    {
+        console.log('Opening Mind Map...');
+        await page.waitForSelector('.artifact-library-container');
+        await page.locator(
+            '.artifact-item-button:has(mat-icon:has-text("flowchart"))'
+        ).first().click();
+        console.log('✅ Opened Mind Map');
+        await page.waitForTimeout(5000);
+        console.log('Clicking Export Mind Map...');
+        await page.locator('button[aria-label="导出思维导图"]').click();
+        await page.waitForSelector('button:has-text("JSON")');
+        console.log('Selecting JSON export...');
+        const [mindmapDownload] = await Promise.all([
+            page.waitForEvent('download'),
+            page.locator('button:has-text("JSON")').click()
+        ]);
+        await mindmapDownload.saveAs(path.join(DOWNLOAD_DIR, mindmapDownload.suggestedFilename()));
+        console.log('✅ Saved Mind Map JSON:', mindmapDownload.suggestedFilename());
+        await page.reload();
+    }
+
     await page.waitForTimeout(5000);
-    console.log('Opening Mind Map...');
-    await page.waitForSelector('.artifact-library-container');
-    await page.locator(
-        '.artifact-item-button:has(mat-icon:has-text("flowchart"))'
-    ).first().click();
-    console.log('✅ Opened Mind Map');
+
+    // Open Flashcards
+    {
+        console.log('Opening Flashcards...');
+        await page.waitForSelector('.artifact-library-container');
+        await page.locator(
+            '.artifact-item-button:has(mat-icon:has-text("cards_star"))'
+        ).first().click();
+        console.log('✅ Opened Flashcards');
+        await page.waitForTimeout(5000);
+        await page.locator('button[aria-label="Copy JSON"]')
+            .filter({ hasText: 'Copy' })
+            .click();
+        const clipboardJson = await page.evaluate(() => navigator.clipboard.readText());
+        fs.writeFileSync(path.join(DOWNLOAD_DIR, 'clouds_Flashcards.json'), clipboardJson, 'utf-8');
+        console.log('Flashcards JSON saved!');
+        await page.reload();
+    }
+
     await page.waitForTimeout(5000);
-    await page.reload();
+
+
+    // Open Quiz
+    {
+        console.log('Opening Quiz...');
+        await page.waitForSelector('.artifact-library-container');
+        await page.locator(
+            '.artifact-item-button:has(mat-icon:has-text("quiz"))'
+        ).first().click();
+        console.log('✅ Opened Quiz');
+        await page.waitForTimeout(5000);
+        await page.locator('button[aria-label="Copy JSON"]')
+            .filter({ hasText: 'Copy' })
+            .click();
+        const clipboardJson = await page.evaluate(() => navigator.clipboard.readText());
+        fs.writeFileSync(path.join(DOWNLOAD_DIR, 'clouds_Quiz.json'), clipboardJson, 'utf-8');
+        console.log('✅ Quiz Saved');
+        await page.reload();
+    }
+
     await page.waitForTimeout(5000);
-    console.log('✅ Collapsed Mindmap View');
-
-    // ---------- Waiting for Content generation ----------
-    await contentLoadWait();
 
 
-    // // Open Flashcards
-    // await page.waitForTimeout(5000);
-    // console.log('Opening Flashcards...');
-    // await page.waitForSelector('.artifact-library-container');
-    // await page.locator(
-    //     '.artifact-item-button:has(mat-icon:has-text("cards_star"))'
-    // ).first().click();
-    // console.log('✅ Opened Flashcards');
-    // await page.waitForTimeout(5000);
-    // await page.reload();
-    // await page.waitForTimeout(5000);
-    // console.log('✅ Closed Flashcards Viewer');
-
-    // // ---------- Waiting for Content generation ----------
-    // await contentLoadWait();
-
-    // // Open Quiz
-    // await page.waitForTimeout(5000);
-    // console.log('Opening Quiz...');
-    // await page.waitForSelector('.artifact-library-container');
-    // await page.locator(
-    //     '.artifact-item-button:has(mat-icon:has-text("quiz"))'
-    // ).first().click();
-    // console.log('✅ Opened Quiz');
-    // await page.waitForTimeout(5000);
-    // await page.reload();
-    // await page.waitForTimeout(5000);
-    // console.log('✅ Closed Quiz Viewer');
 }
 
 
