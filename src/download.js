@@ -71,7 +71,7 @@ async function automateNotebookLM() {
 
     const contentLoadWait = async () => {
         // ---------- Waiting for Content generation ----------
-        await page.waitForTimeout(10000);
+        await page.waitForTimeout(5000);
         const artifactItems = await page.$$('artifact-library-item, artifact-library-note');
         for (const item of artifactItems) {
             const button = await item?.$('button.artifact-stretched-button');
@@ -128,7 +128,8 @@ async function automateNotebookLM() {
         console.log('✅ Saved Slides PDF');
     }
 
-    await page.waitForTimeout(5000);
+    // ---------- Waiting for Content generation ----------
+    await contentLoadWait();
 
     // Open Audio Overview dropdown
     {
@@ -154,7 +155,9 @@ async function automateNotebookLM() {
         console.log('✅ Saved Audio Overview');
     }
 
-    await page.waitForTimeout(5000);
+    // ---------- Waiting for Content generation ----------
+    await contentLoadWait();
+
 
     // Open Video Overview dropdown
     {
@@ -183,7 +186,9 @@ async function automateNotebookLM() {
     }
 
 
-    await page.waitForTimeout(5000);
+    // ---------- Waiting for Content generation ----------
+    await contentLoadWait();
+
 
     // Open Mind Map
     {
@@ -207,7 +212,10 @@ async function automateNotebookLM() {
         await page.reload();
     }
 
-    await page.waitForTimeout(5000);
+
+    // ---------- Waiting for Content generation ----------
+    await contentLoadWait();
+
 
     // Open Flashcards
     {
@@ -227,7 +235,9 @@ async function automateNotebookLM() {
         await page.reload();
     }
 
-    await page.waitForTimeout(5000);
+
+    // ---------- Waiting for Content generation ----------
+    await contentLoadWait();
 
 
     // Open Quiz
@@ -245,12 +255,7 @@ async function automateNotebookLM() {
         const clipboardJson = await page.evaluate(() => navigator.clipboard.readText());
         fs.writeFileSync(path.join(DOWNLOAD_DIR, 'clouds_Quiz.json'), clipboardJson, 'utf-8');
         console.log('✅ Quiz Saved');
-        await page.reload();
     }
-
-    await page.waitForTimeout(5000);
-
-
 }
 
 
