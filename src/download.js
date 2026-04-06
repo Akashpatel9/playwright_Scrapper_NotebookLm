@@ -256,6 +256,10 @@ async function automateNotebookLM() {
         fs.writeFileSync(path.join(DOWNLOAD_DIR, 'clouds_Quiz.json'), clipboardJson, 'utf-8');
         console.log('✅ Quiz Saved');
     }
+
+
+
+    console.log('All Artifacts Downloaded');
 }
 
 
