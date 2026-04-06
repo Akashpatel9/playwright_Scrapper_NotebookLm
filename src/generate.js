@@ -3,12 +3,15 @@ const fs = require('fs');
 const path = require('path');
 
 const PDF_URL = 'https://ncert.nic.in/textbook/pdf/jeff101.pdf';
+const DOWNLOAD_DIR = path.join(__dirname, 'downloads');
 
 // Persistent profile (safe, NOT Chrome profile)
 const USER_DATA_DIR = path.join(__dirname, 'pw-profile');
 
 // ---------- Main ----------
 async function automateNotebookLM() {
+    if (!fs.existsSync(DOWNLOAD_DIR)) fs.mkdirSync(DOWNLOAD_DIR);
+
     const context = await chromium.launchPersistentContext(USER_DATA_DIR, {
         headless: false,
         acceptDownloads: true,
